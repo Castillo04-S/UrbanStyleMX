@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="copyright" content="Castillo Saavedra Luis Alberto">
+  <title>Gestión de Productos - Urban Style MX</title>
+  <link rel="stylesheet" href="css/formularios.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <img src="imgs/logo.png" alt="Logo de la empresa">
+        <div>
+          <h1>Urban Style MX</h1>
+          <p>Exprésate con estilo urbano</p>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="Catalogo.html">Catálogo</a></li>
+          <li><a href="html/Contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section>
+       <h2>Lista de Productos</h2>
+       <label for="buscador">Buscar producto:</label>
+       <input type="text" id="buscador" placeholder="Escribe nombre, categoría o precio...">
+
+       <table id="tabla-productos">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th>Stock</th>
+                <th>Foto</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Gestión de Producto</h2>
+      <form id="form-producto" enctype="multipart/form-data">
+        <input type="hidden" name="id_producto" id="id">
+        <input type="hidden" name="foto_actual" id="foto_actual">
+        <input type="hidden" name="accion" id="accion" value="agregar">
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea>
+
+        <label for="precio">Precio (MXN):</label>
+        <input type="number" id="precio" name="precio" step="0.01" required>
+
+        <label for="categoria">Categoría:</label>
+        <input type="text" id="categoria" name="categoria" required>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required>
+
+        <label for="foto">Foto:</label>
+        <input type="file" id="foto" name="foto" accept="image/*">
+        <div id="vista-foto"></div>
+
+        <button type="button" onclick="enviarFormulario('agregar')">Agregar</button>
+        <button type="button" onclick="enviarFormulario('actualizar')">Actualizar</button>
+        <button type="button" onclick="enviarFormulario('eliminar')">Eliminar</button>
+        <button type="button" onclick="limpiarFormulario()">Limpiar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Urban Style MX. Todos los derechos reservados.</p>
+    <p>Creado por: Castillo Saavedra Luis Alberto</p>
+    <p>
+      <a href="https://validator.w3.org/check?uri=referer" target="_blank">
+        <img src="https://www.w3.org/Icons/valid-html401" alt="Valid HTML">
+      </a>
+      <a href="https://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+        <img src="https://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS">
+      </a>
+    </p>
+  </footer>
+
+  <script>
+    let productos = [];
+
+    function cargarProductos() {
+        console.log("Cargando productos...");
+        fetch("servidor/productos.php?accion=listar")
+            .then(res => res.json())
+            .then(data => {
+                console.log("Productos recibidos:", data);
+                productos = data;
+                mostrarProductos(productos);
+            })
+            .catch(err => {
+                console.error("Error al cargar productos:", err);
+                const tbody = document.querySelector("#tabla-productos tbody");
+                tbody.innerHTML = `<tr><td colspan="6">Error al conectar con el servidor</td></tr>`;
+            });
+    }
+
+        function mostrarProductos(lista) {
+            const tbody = document.querySelector("#tabla-productos tbody");
+            tbody.innerHTML = "";
+
+            if (!Array.isArray(lista)) {
+                console.error("La respuesta no es una lista válida:", lista);
+                tbody.innerHTML = `<tr><td colspan="6">Error al cargar productos</td></tr>`;
+                return;
+            }
+
+            if (lista.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6">No hay productos disponibles</td></tr>`;
+                return;
+            }
+
+            lista.forEach(p => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                <td>${p.id_producto}</td>
+                <td>${p.nombre}</td>
+                <td>${p.precio}</td>
+                <td>${p.categoria}</td>
+                <td>${p.stock}</td>
+                <td><img src="${p.foto}" width="50"></td>
+                `;
+                fila.onclick = () => seleccionarProducto(p);
+                tbody.appendChild(fila);
+            });
+         }
+
+
+    document.getElementById("buscador").addEventListener("input", function () {
+    const texto = this.value.toLowerCase();
+    const filtrados = productos.filter(p =>
+        p.nombre.toLowerCase().includes(texto) ||
+        p.categoria.toLowerCase().includes(texto) ||
+        p.precio.toString().includes(texto)
+    );
+    mostrarProductos(filtrados);
+    });
+
+
+    function seleccionarProducto(p) {
+      document.getElementById("id").value = p.id_producto;
+      document.getElementById("nombre").value = p.nombre;
+      document.getElementById("descripcion").value = p.descripcion;
+      document.getElementById("precio").value = p.precio;
+      document.getElementById("categoria").value = p.categoria;
+      document.getElementById("stock").value = p.stock;
+      document.getElementById("vista-foto").innerHTML = `<img src="${p.foto}" width="100">`;
+      document.getElementById("foto_actual").value = p.foto;
+    }
+
+    function limpiarFormulario() {
+      document.getElementById("form-producto").reset();
+      document.getElementById("id").value = "";
+      document.getElementById("vista-foto").innerHTML = "";
+    }
+
+    function enviarFormulario(accion) {
+        document.getElementById("accion").value = accion;
+        const formData = new FormData();
+        formData.set("accion", accion);
+
+        const id = document.getElementById("id").value;
+        const nombre = document.getElementById("nombre").value;
+        const fotoActual = document.getElementById("foto_actual").value;
+        const archivo = document.getElementById("foto").files[0];
+        const form = document.getElementById("form-producto");
+
+        // Validación para eliminar
+        if (accion === "eliminar") {
+            if (!id) {
+                alert(" Selecciona un producto antes de eliminar.");
+                return;
+            }
+
+            const confirmar = confirm(`¿Estás seguro de que deseas eliminar el producto "${nombre}" con ID ${id}?`);
+            if (!confirmar) return;
+
+            formData.set("id_producto", id);
+        }
+
+        // Validación para actualizar
+        else if (accion === "actualizar") {
+            if (!id) {
+                alert(" Selecciona un producto antes de actualizar.");
+                return;
+            }
+
+            const confirmar = confirm(`¿Deseas actualizar el producto "${nombre}" con ID ${id}?`);
+            if (!confirmar) return;
+
+            formData.set("id_producto", id);
+            formData.set("foto_actual", fotoActual);
+
+            for (const campo of form.elements) {
+                if (campo.name && campo.type !== "file" && campo.name !== "id_producto") {
+                    formData.set(campo.name, campo.value);
+                }
+            }
+
+            if (archivo) {
+                formData.set("foto", archivo);
+            }
+        }
+
+        // Agregar nuevo producto
+        else if (accion === "agregar") {
+            for (const campo of form.elements) {
+                if (campo.name && campo.type !== "file") {
+                    formData.set(campo.name, campo.value);
+                }
+            }
+
+            if (archivo) {
+                formData.set("foto", archivo);
+            }
+        }
+
+        // Enviar al servidor
+        fetch("servidor/productos.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(resp => {
+            alert(resp.mensaje);
+            cargarProductos();
+            limpiarFormulario();
+        })
+        .catch(err => {
+            console.error("Error en la operación:", err);
+            alert(" Error al conectar con el servidor.");
+        });
+    }
+
+    document.getElementById("foto").addEventListener("change", function () {
+      const archivo = this.files[0];
+      if (archivo) {
+        const lector = new FileReader();
+        lector.onload = function (e) {
+          document.getElementById("vista-foto").innerHTML = `<img src="${e.target.result}" width="100">`;
+        };
+        lector.readAsDataURL(archivo);
+      }
+    });
+
+    window.onload = cargarProductos;
+  </script>
+</body>
+</html>
