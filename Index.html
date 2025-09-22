@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Urban Style MX - Moda urbana mexicana. Ropa, sneakers y accesorios para jóvenes que buscan expresarse con estilo.">
+    <meta name="copyright" content="Castillo Saavedra Luis Alberto">
+    <title>Urban Style MX</title>
+    <link rel="stylesheet" href="css/styleIn.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="imgs/logo.png" alt="Logo de la empresa">
+                <div>
+                    <h1>Urban Style MX</h1>
+                    <p>Exprésate con estilo urbano</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="html/Catalogo.html">Catálogo</a></li>
+                    <li><a href="html/Contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+    <div>
+        <img src="imgs/banner.png" alt="Nuevos lanzamientos Urban Style MX" style="width:100%; height:auto;">
+    </div>
+
+    <section id="nosotros" class="contenedor">
+        <h2>Quiénes Somos</h2>
+        <p>
+            Somos Urban Style MX, una marca de ropa urbana mexicana pensada para jóvenes
+            que buscan expresarse a través de su estilo. Creemos que la moda no solo es vestirse, 
+            sino una forma de mostrar actitud, personalidad y autenticidad.
+            Nacimos con la idea de ofrecer ropa moderna, accesible y de calidad, 
+            inspirada en la cultura urbana, el hip hop, el skate y el streetwear. 
+            Nuestra meta es que cada prenda sea más que ropa: sea una extensión de tu identidad. <br><br>
+            En pocas palabras: no vendemos solo ropa, vendemos estilo y confianza.
+        </p>
+    </section>
+
+    <section id="mision" class="contenedor">
+        <h2>Misión</h2>
+        <p>
+            Ofrecer ropa urbana moderna, accesible y de calidad que permita a los jóvenes expresar su estilo propio.
+        </p>
+    </section>
+
+    <section id="vision" class="contenedor">
+        <h2>Visión</h2>
+        <p>
+            Convertirnos en una de las marcas urbanas juveniles más reconocidas en México y Latinoamérica.
+        </p>
+    </section>
+
+    <section id="valores" class="contenedor">
+        <h2>Valores</h2>
+        <ul>
+            <li>Honestidad</li>
+            <li>Responsabilidad</li>
+            <li>Innovación</li>
+            <li>Creatividad</li>
+            <li>Autenticidad</li>
+            <li>Inclusión</li>
+            <li>Calidad</li>
+        </ul>
+    </section>
+    
+   <section class="productos">
+    <h2>Productos Destacados</h2>
+    <div class="grid">
+
+        <div class="producto">
+            <div class="producto-img">
+                <img src="imgs/playera.png" alt="Camisa urbana estilo street color negro de Urban Style MX">
+            </div>
+            <div class="producto-info">
+                <h3>Camisa Street</h3>
+                <p>$336.31 MXN</p>
+            </div>
+        </div>
+
+        <div class="producto">
+            <div class="producto-img">
+                <img src="imgs/sneakers.png" alt="Sneakers adidas estilo street color grise de Urban Style MX">
+            </div>
+            <div class="producto-info">
+                <h3>Sneakers Classic</h3>
+                <p>$1,821.60 MXN</p>
+            </div>
+        </div>
+
+        <div class="producto">
+            <div class="producto-img">
+                <img src="imgs/gorra.png" alt="Gorra chrome heart color negra con diseno simple de Urban Style MX">
+            </div>
+            <div class="producto-info">
+                <h3>Gorra Original</h3>
+                <p>$14,677.34 MXN</p>
+            </div>
+        </div>
+
+    </div>
+    <a href="html/Catalogo.html" class="btn">Ver Catálogo Completo</a>
+</section>
+
+    <section class="contacto">
+        <h2>Contacto Rápido</h2>
+        <a href="https://wa.me/524341566029" target="_blank">WhatsApp</a>
+        <form action="enviar.php" method="post">
+            <input type="text" name="nombre" placeholder="Tu nombre" required>
+            <input type="email" name="correo" placeholder="Tu correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+            <textarea name="mensaje" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Urban Style MX. Todos los derechos reservados.</p>
+        <p>Creado por: Castillo Saavedra Luis Alberto</p>
+        <p>
+            <a href="https://validator.w3.org/check?uri=referer" target="_blank">
+                <img src="https://www.w3.org/Icons/valid-html401" alt="Valid HTML">
+            </a>
+            <a href="https://jigsaw.w3.org/css-validator/check/referer" target="_blank">
+                <img src="https://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS">
+            </a>
+        </p>
+    </footer>
+</body>
+</html>
