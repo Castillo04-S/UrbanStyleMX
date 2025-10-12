@@ -48,7 +48,7 @@ nav ul {
 nav ul li a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold; 
+    font-weight: bold;
 }
 nav ul li a:hover {
     color: #ccc;
@@ -64,6 +64,10 @@ nav ul li a:hover {
     padding: 0;
     margin: 0;
     gap: 20px;
+}
+
+.contenedor ul li {
+    text-decoration: none;
 }
 /* BOTONES */
 .btn {
