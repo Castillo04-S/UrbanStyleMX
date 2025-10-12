@@ -54,21 +54,17 @@ nav ul li a:hover {
     color: #ccc;
 }
 
-/* BANNER */
-.banner {
-    background: url('banner.jpg') no-repeat center center/cover;
-    color: white;
+/* Informacion */
+.contenedor {
     text-align: center;
-    padding: 100px 20px;
-}
-.banner h2 {
-    font-size: 2.5em;
-    margin-bottom: 15px;
-}
-.banner p {
-    font-size: 1.2em;
 }
 
+.contenedor ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+}
 /* BOTONES */
 .btn {
     display: inline-block;
@@ -123,27 +119,12 @@ nav ul li a:hover {
     object-fit: cover; 
     display: block;
 }
-/* Info */
-.producto-info {
-    padding: 15px;
-    text-align: center;
-}
-.producto-info h3 {
-    margin: 10px 0;
-    font-size: 1.1em;
-}
-.producto-info p {
-    color: #333;
-    font-weight: bold;
-}
+
 /* CONTACTO */
 .contacto {
     background: #f4f4f4;
     padding: 40px 20px;
     text-align: center;
-}
-.contacto h2 {
-    margin-bottom: 20px;
 }
 .contacto a {
     display: inline-block;
@@ -161,7 +142,7 @@ nav ul li a:hover {
 form {
     max-width: 400px;
     margin: 0 auto;
-    text-align: left;
+    text-align: center;
 }
 form input,
 form textarea {
