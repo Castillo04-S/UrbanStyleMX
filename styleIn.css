@@ -48,7 +48,7 @@ nav ul {
 nav ul li a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: bold; 
 }
 nav ul li a:hover {
     color: #ccc;
