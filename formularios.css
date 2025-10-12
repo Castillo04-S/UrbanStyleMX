@@ -14,6 +14,22 @@ header {
     padding: 10px 20px;
 }
 
+.error {
+    text-align: center;
+    color: red;
+    font-size: 0.9em;
+    margin-top: 4px;
+    display: block;
+}
+
+.formul{
+    text-align: center;
+}
+.campo {
+  margin-bottom: 20px;
+}
+
+
 .header-container {
     display: flex;
     justify-content: space-between; 
@@ -195,6 +211,8 @@ footer {
     padding: 15px;
     margin-top: 40px;
 }
+
+
 
 /* Responsividad */
 @media (max-width: 600px) {
