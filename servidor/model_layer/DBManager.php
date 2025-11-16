@@ -78,8 +78,8 @@ class DBManager {
             $stmt->bind_param("ssdsisi", $nombre, $descripcion, $precio, $categoria, $stock, $foto, $id);
             $ok = $stmt->execute();
             if (!$ok) {
-            error_log("Error en UPDATE: " . $stmt->error);
-}
+                error_log("Error en UPDATE: " . $stmt->error);
+            }
 
             $stmt->close();
             $this->close($link);
@@ -110,6 +110,78 @@ class DBManager {
             return $count > 0;
         }
 
-        
+        // ---------------- USUARIOS ----------------
+        public function agregarUsuario($nombre, $correo, $telefono, $direccion, $pass, $rol = 'cliente') {
+            $link = $this->open();
+            $hash = password_hash($pass, PASSWORD_DEFAULT);
+            $stmt = $link->prepare("INSERT INTO clientes (nombre, correo, telefono, direccion, contrasena, rol) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $nombre, $correo, $telefono, $direccion, $hash, $rol);
+            $ok = $stmt->execute();
+            $stmt->close();
+            $this->close($link);
+            return $ok;
+        }
+
+        public function obtenerUsuarios() {
+            $link = $this->open();
+            $resultado = $link->query("SELECT id_cliente, nombre, correo, telefono, direccion, rol FROM clientes");
+            $usuarios = [];
+            while ($fila = $resultado->fetch_assoc()) {
+                $usuarios[] = $fila;
+            }
+            $resultado->close();
+            $this->close($link);
+            return $usuarios;
+        }
+
+        public function actualizarUsuario($id, $nombre, $correo, $rol) {
+            $link = $this->open();
+            $stmt = $link->prepare("UPDATE clientes SET nombre=?, correo=?, rol=? WHERE id_cliente=?");
+            $stmt->bind_param("sssi", $nombre, $correo, $rol, $id);
+            $ok = $stmt->execute();
+            $stmt->close();
+            $this->close($link);
+            return $ok;
+        }
+
+        public function eliminarUsuario($id) {
+            $link = $this->open();
+            $stmt = $link->prepare("DELETE FROM clientes WHERE id_cliente=?");
+            $stmt->bind_param("i", $id);
+            $ok = $stmt->execute();
+            $stmt->close();
+            $this->close($link);
+            return $ok;
+        }
+
+        public function loginUsuario($correo, $pass) {
+            $link = $this->open();
+
+            // Consulta por correo
+            $stmt = $link->prepare("SELECT id_cliente, nombre, contrasena, rol FROM clientes WHERE correo = ?");
+            $stmt->bind_param("s", $correo);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+
+            if ($resultado->num_rows > 0) {
+                $usuario = $resultado->fetch_assoc();
+
+                // Verifica la contraseña
+                if (password_verify($pass, $usuario['contrasena'])) {
+                    $stmt->close();
+                    $this->close($link);
+                    return [
+                        "id" => $usuario['id_cliente'],
+                        "nombre" => $usuario['nombre'],
+                        "rol" => $usuario['rol']
+                    ];
+                }
+            }
+
+            $stmt->close();
+            $this->close($link);
+            return false;
+        }
+
     }
 ?>
