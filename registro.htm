@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Urban Style MX</title>
+    <link rel="stylesheet" href="css/stylelogin.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+
+<main>
+    <div class="wrapper">
+        <form id="form-registro">
+            <!-- acción para PHP -->
+            <input type="hidden" name="accion" value="agregar">
+
+            <h1>Registro</h1>
+
+            <div class="input-box">
+                <input type="text" name="nombre" placeholder="Nombre completo" required>
+                <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="email" name="correo" placeholder="Correo electrónico" required>
+                <i class='bx bxs-envelope'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="tel" name="telefono" placeholder="Teléfono" required>
+                <i class='bx bxs-phone'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="direccion" placeholder="Dirección" required>
+                <i class='bx bxs-home'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password2" placeholder="Repetir contraseña" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+
+            <button type="submit" class="btn">Registrar</button>
+
+            <div class="register-link">
+                <p>¿Ya tienes cuenta? <a href="sesion.html">Inicia sesión</a></p>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+const form = document.getElementById('form-registro');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const pass = formData.get('password');
+    const pass2 = formData.get('password2');
+    if (pass !== pass2) {
+        alert("❌ Las contraseñas no coinciden.");
+        return;
+    }
+
+    try {
+        const res = await fetch('servidor/usuarios.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const text = await res.text();
+        console.log("Respuesta del servidor:", text);
+
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            throw new Error("Respuesta no válida del servidor.");
+        }
+        alert(data.mensaje);
+        if (data.mensaje.includes("✅")) {
+            form.reset();
+
+            if (data.usuario) {
+                sessionStorage.setItem("rol", data.usuario.rol);
+                sessionStorage.setItem("nombre", data.usuario.nombre);
+            }
+            window.location.href = "index.html";
+        }
+
+    } catch (err) {
+        console.error("Error al conectar con el servidor:", err);
+        alert("❌ Error de conexión con el servidor.");
+    }
+});
+</script>
+
+</body>
+</html>
