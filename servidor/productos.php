@@ -7,8 +7,8 @@
     $db = new DBManager();
 
     $accion = $_POST['accion'] ?? $_GET['accion'] ?? '';
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
     if ($accion === 'agregar') {
         $nombre = trim($_POST['nombre'] ?? '');
         $descripcion = trim($_POST['descripcion'] ?? '');
