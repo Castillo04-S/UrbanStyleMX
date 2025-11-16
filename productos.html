@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="copyright" content="Castillo Saavedra Luis Alberto">
   <title>Gestión de Productos - Urban Style MX</title>
-  <link rel="stylesheet" href="https://castillo04-s.github.io/UrbanStyleMX//formularios.css">
+  <link rel="stylesheet" href="css/formularios.css">
 </head>
 <body>
   <header>
     <div class="header-container">
       <div class="logo">
-        <img src="img/logo.png" alt="Logo de la empresa">
+        <img src="imgs/logo.png" alt="Logo de la empresa">
         <div>
           <h1>Urban Style MX</h1>
           <p>Exprésate con estilo urbano</p>
@@ -50,37 +50,50 @@
       </table>
     </section>
 
-    <section>
+    <section class="formul">
       <h2>Gestión de Producto</h2>
-      <form id="form-producto" enctype="multipart/form-data">
+      <form id="form-producto" enctype="multipart/form-data" novalidate>
         <input type="hidden" name="id_producto" id="id">
         <input type="hidden" name="foto_actual" id="foto_actual">
         <input type="hidden" name="accion" id="accion" value="agregar">
-
+        
+        <div class="campo">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre del producto">
+        </div>
 
+        <div class="campo">
         <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion" required></textarea>
-
+        <textarea id="descripcion" name="descripcion" placeholder="Escribe la descripción del producto"></textarea>
+        </div>
+        
+        <div class="campo">
         <label for="precio">Precio (MXN):</label>
-        <input type="number" id="precio" name="precio" step="0.01" required>
-
+        <input type="text" id="precio" name="precio" placeholder="Precio individual del producto">
+        </div>
+        
+        <div class="campo">
         <label for="categoria">Categoría:</label>
-        <input type="text" id="categoria" name="categoria" required>
-
+        <input type="text" id="categoria" name="categoria" placeholder="Categoría del producto">
+        </div>
+        
+        <div class="campo">
         <label for="stock">Stock:</label>
-        <input type="number" id="stock" name="stock" required>
+        <input type="text" id="stock" name="stock" placeholder="Cantidad disponible">
+        </div>
 
+        <div class="campo">
         <label for="foto">Foto:</label>
         <input type="file" id="foto" name="foto" accept="image/*">
+        </div>
         <div id="vista-foto"></div>
 
-        <button type="button" onclick="enviarFormulario('agregar')">Agregar</button>
+        <button type="submit">Agregar</button>
         <button type="button" onclick="enviarFormulario('actualizar')">Actualizar</button>
         <button type="button" onclick="enviarFormulario('eliminar')">Eliminar</button>
         <button type="button" onclick="limpiarFormulario()">Limpiar</button>
       </form>
+
     </section>
   </main>
 
@@ -189,7 +202,7 @@
         // Validación para eliminar
         if (accion === "eliminar") {
             if (!id) {
-                alert(" Selecciona un producto antes de eliminar.");
+                alert("❗ Selecciona un producto antes de eliminar.");
                 return;
             }
 
@@ -202,7 +215,7 @@
         // Validación para actualizar
         else if (accion === "actualizar") {
             if (!id) {
-                alert(" Selecciona un producto antes de actualizar.");
+                alert("❗ Selecciona un producto antes de actualizar.");
                 return;
             }
 
@@ -249,7 +262,7 @@
         })
         .catch(err => {
             console.error("Error en la operación:", err);
-            alert(" Error al conectar con el servidor.");
+            alert("❌ Error al conectar con el servidor.");
         });
     }
 
@@ -266,5 +279,31 @@
 
     window.onload = cargarProductos;
   </script>
+
+  <script src="https://unpkg.com/just-validate@4.3.0/dist/just-validate.production.min.js"></script>
+  <script>
+    const validation = new JustValidate("#form-producto", {
+      errorLabelCssClass: 'error',
+      focusInvalidField: true,
+      lockForm: true
+    });
+
+    validation
+      .addField("#nombre", [{ rule: "required", errorMessage: "⚠️ El nombre es obligatorio" }])
+      .addField("#descripcion", [{ rule: "required", errorMessage: "⚠️ La descripción es obligatoria" }])
+      .addField("#precio", [
+        { rule: "required", errorMessage: "⚠️ El precio es obligatorio" },
+        { rule: "customRegexp", value: /^\d+(\.\d{1,2})?$/, errorMessage: "⚠️ Debe ser un número válido" }
+      ])
+      .addField("#categoria", [{ rule: "required", errorMessage: "⚠️ La categoría es obligatoria" }])
+      .addField("#stock", [
+        { rule: "required", errorMessage: "⚠️ El stock es obligatorio" },
+        { rule: "customRegexp", value: /^\d+$/, errorMessage: "⚠️ Debe ser un número entero" }
+      ])
+      .onSuccess(() => {
+        enviarFormulario('agregar');
+      });
+  </script>
+
 </body>
 </html>
