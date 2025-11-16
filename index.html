@@ -6,13 +6,43 @@
     <meta name="description" content="Urban Style MX - Moda urbana mexicana. Ropa, sneakers y accesorios para jóvenes que buscan expresarse con estilo.">
     <meta name="copyright" content="Castillo Saavedra Luis Alberto">
     <title>Urban Style MX</title>
-    <link rel="stylesheet" href="https://castillo04-s.github.io/UrbanStyleMX/styleIn.css">
+    <link rel="stylesheet" href="css/styleIn.css">
+    <!--<link rel="stylesheet" href="https://castillo04-s.github.io/UrbanStyleMX/styleIn.css"> -->
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        .exito {
+            color: green;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        #usuario-info {
+            float: right;
+            margin-right: 20px;
+            font-weight: bold;
+            color: #222;
+        }
+        #cerrar-sesion {
+            margin-left: 15px;
+            padding: 5px 10px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #cerrar-sesion:hover {
+            background-color: #666;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="img/logo.png" alt="Logo de la empresa">
+                <img src="imgs/logo.png" alt="Logo de la empresa">
                 <div>
                     <h1>Urban Style MX</h1>
                     <p>Exprésate con estilo urbano</p>
@@ -21,17 +51,21 @@
             <nav>
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
-                    <li><a href="productos.html">Productos</a></li>
                     <li><a href="html/Catalogo.html">Catálogo</a></li>
                     <li><a href="html/Contacto.html">Contacto</a></li>
+                    <li><a href="productos.html" class="tab admin-only">Productos</a></li>
+                    <li><a href="usuarios_admin.html" class="tab admin-only">Usuarios</a></li>
+                    <li><span id="userInfo"></span></li>
+                    <li><button id="logoutBtn" class="btn-logout" style="display:none;">Cerrar sesión</button></li>
                 </ul>
+                <!-- Aquí aparecerá la info del usuario -->
+                <div id="usuario-info"></div>
             </nav>
         </div>
     </header>
 
-
     <div>
-        <img src="img/banner.png" alt="Nuevos lanzamientos Urban Style MX" style="width:100%; height:auto;">
+        <img src="imgs/banner.png" alt="Nuevos lanzamientos Urban Style MX" style="width:100%; height:auto;">
     </div>
 
     <section id="nosotros" class="contenedor">
@@ -74,53 +108,46 @@
         </ul>
     </section>
     
-   <section class="productos">
-    <h2>Productos Destacados</h2>
-    <div class="grid">
-
-        <div class="producto">
-            <div class="producto-img">
-                <img src="img/playera.png" alt="Camisa urbana estilo street color negro de Urban Style MX">
+    <section class="productos">
+        <h2>Productos Destacados</h2>
+        <div class="grid">
+            <div class="producto">
+                <div class="producto-img">
+                    <img src="imgs/playera.png" alt="Camisa urbana estilo street color negro de Urban Style MX">
+                </div>
+                <div class="producto-info">
+                    <h3>Camisa Street</h3>
+                    <p>$336.31 MXN</p>
+                </div>
             </div>
-            <div class="producto-info">
-                <h3>Camisa Street</h3>
-                <p>$336.31 MXN</p>
+
+            <div class="producto">
+                <div class="producto-img">
+                    <img src="imgs/sneakers.png" alt="Sneakers adidas estilo street color gris de Urban Style MX">
+                </div>
+                <div class="producto-info">
+                    <h3>Sneakers Classic</h3>
+                    <p>$1,821.60 MXN</p>
+                </div>
+            </div>
+
+            <div class="producto">
+                <div class="producto-img">
+                    <img src="imgs/gorra.png" alt="Gorra chrome heart color negra con diseño simple de Urban Style MX">
+                </div>
+                <div class="producto-info">
+                    <h3>Gorra Original</h3>
+                    <p>$14,677.34 MXN</p>
+                </div>
             </div>
         </div>
-
-        <div class="producto">
-            <div class="producto-img">
-                <img src="img/sneakers.png" alt="Sneakers adidas estilo street color grise de Urban Style MX">
-            </div>
-            <div class="producto-info">
-                <h3>Sneakers Classic</h3>
-                <p>$1,821.60 MXN</p>
-            </div>
-        </div>
-
-        <div class="producto">
-            <div class="producto-img">
-                <img src="img/gorra.png" alt="Gorra chrome heart color negra con diseno simple de Urban Style MX">
-            </div>
-            <div class="producto-info">
-                <h3>Gorra Original</h3>
-                <p>$14,677.34 MXN</p>
-            </div>
-        </div>
-
-    </div>
-    <a href="html/Catalogo.html" class="btn">Ver Catálogo Completo</a>
-</section>
+        <a href="html/Catalogo.html" class="btn">Ver Catálogo Completo</a>
+    </section>
 
     <section class="contacto">
         <h2>Contacto Rápido</h2>
         <a href="https://wa.me/524341566029" target="_blank">WhatsApp</a>
-        <form action="enviar.php" method="post">
-            <input type="text" name="nombre" placeholder="Tu nombre" required>
-            <input type="email" name="correo" placeholder="Tu correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-            <textarea name="mensaje" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
-            <button type="submit">Enviar</button>
-        </form>
+        <div id="contacto-react"></div>
     </section>
 
     <footer>
@@ -135,5 +162,44 @@
             </a>
         </p>
     </footer>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/react-hook-form@7.45.3/dist/index.umd.js"></script>
+
+    <script type="text/babel" src="app.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const usuarioInfo = document.getElementById("usuario-info");
+            const rol = localStorage.getItem("rol");
+            const nombre = localStorage.getItem("nombre");
+
+            if (!rol || !nombre) {
+                window.location.href = "sesion.htm";
+                return;
+            }
+
+            usuarioInfo.innerHTML = `
+                <span>Hola, <strong>${nombre}</strong> (${rol})</span>
+                <button id="cerrar-sesion">Cerrar sesión</button>
+            `;
+
+            const cerrarBtn = document.getElementById("cerrar-sesion");
+            cerrarBtn.addEventListener("click", () => {
+                if (confirm("¿Deseas cerrar tu sesión?")) {
+                    localStorage.clear();
+                    window.location.href = "sesion.htm";
+                }
+            });
+
+            if (rol === "cliente") {
+                document.querySelectorAll(".admin-only").forEach(e => e.style.display = "none");
+            }
+        });
+    </script>
+
+
 </body>
 </html>
